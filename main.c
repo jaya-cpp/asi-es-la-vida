@@ -1,6 +1,11 @@
 #include <stdio.h>
 
+struct GridData {
 
+    unsigned int maxwidth, userwidth, maxheight;
+    unsigned char* pData;
+
+};
 
 unsigned int CalcNext8x(unsigned int x){
     unsigned int mod8 = x % 8;
@@ -19,12 +24,12 @@ unsigned int IsCellSetInLine(unsigned int colPosition, unsigned char* pLine){
     return IsBitSet(bitPosition, &(pLine[byteIndex]));
 }
 
-unsigned char* GetLine(unsigned int rowPosition, unsigned int width, unsigned char* pData){
-    return &(pData[(width >> 3) * rowPosition]);
+unsigned char* GetLine(unsigned int rowPosition, struct GridData* pGrid){
+    return &(pGrid->pData[(pGrid->maxwidth >> 3) * rowPosition]);
 }
 
-unsigned int IsCellSet(unsigned int colPosition, unsigned int rowPosition, unsigned int width, unsigned char* pData){
-    return IsCellSetInLine(colPosition, GetLine(rowPosition, width, pData));
+unsigned int IsCellSet(unsigned int colPosition, unsigned int rowPosition, struct GridData* pGrid){
+    return IsCellSetInLine(colPosition, GetLine(rowPosition, pGrid));
 }
 
 int main() {
