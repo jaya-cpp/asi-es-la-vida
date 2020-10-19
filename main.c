@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 struct GridData {
 
@@ -6,6 +7,15 @@ struct GridData {
     unsigned char* pData;
 
 };
+struct GridData* CreateGrid(unsigned int width, unsigned int height){
+
+}
+void DestroyGrid(struct GridData* pGridData){
+
+}
+void CalcNextGrid(struct GridData* pGridData){
+
+}
 
 unsigned int CalcNext8x(unsigned int x){
     unsigned int mod8 = x % 8;
