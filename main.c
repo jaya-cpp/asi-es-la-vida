@@ -3,14 +3,39 @@
 
 struct GridData {
 
-    unsigned int maxwidth, userwidth, maxheight;
+    unsigned int maxwidth, userwidth, userheight;
     unsigned char* pData;
 
 };
 struct GridData* CreateGrid(unsigned int width, unsigned int height){
 
+    // Check realwidth and datasize:
+    //We are going to use 1 bit per cell. Memory is addressable byte per byte, meaning 8 bits each piece, so we must
+    //use the next 8x number for width. For example if we are using 74 columns in the grid we should use 10 bytes a.k.a.
+    //(80 bits).
+    //User width = 74, maxwidth = 80                => in cell units.
+    size_t realWidth = (width % 8) ? ((width >> 3) + 1) << 3 : width;
+    size_t dataSize = (realWidth >> 3) * height;//  => in byte units.
+
+    //Allocate memory size
+    size_t dataOffset = sizeof(struct GridData);
+    void* pMemoryBuffer = malloc(dataOffset + dataSize);
+
+    //Initialize Pointers
+    struct GridData* pGridData = (struct GridData*) pMemoryBuffer;
+    pGridData->pData = (unsigned char*)(pMemoryBuffer + dataOffset);
+
+    //Initialize GridData
+    pGridData->maxwidth = realWidth;
+    pGridData->userwidth = width;
+    pGridData->userheight = height;
+
+    return pGridData;
+
 }
 void DestroyGrid(struct GridData* pGridData){
+
+    free(pGridData);
 
 }
 void CalcNextGrid(struct GridData* pGridData){
